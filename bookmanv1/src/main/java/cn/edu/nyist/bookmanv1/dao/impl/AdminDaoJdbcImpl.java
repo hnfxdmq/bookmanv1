@@ -1,4 +1,4 @@
-package cn.edu.nyist.bookmanv1.biz.impl;
+package cn.edu.nyist.bookmanv1.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ public class AdminDaoJdbcImpl implements AdminDao {
 		try {
 			conn=DsUtil.getConn();
 			//2、不在使用字符串拼接，改用占位符?代替
-			String sql="select * from t_admin where name=? and password=?";
+			String sql="select * from t_admin where name=? and pwd=?";
 			stmt=conn.prepareStatement(sql);
 			//3、setString给占位符赋值
 			stmt.setString(1, name);

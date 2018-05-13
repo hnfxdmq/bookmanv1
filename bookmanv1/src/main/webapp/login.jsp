@@ -23,7 +23,7 @@
 	<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<form class="form-horizontal" role="form" method="post" action="login">
+			<form class="form-horizontal" role="form" method="post" action="login" id="loginFrm">
 				<div class="form-group">
 				<%if(request.getAttribute("msg")!=null) {%>
 					 <div class="alert alert-warning" role="alert"><%=request.getAttribute("msg")%></div>
@@ -72,10 +72,29 @@
 </script>
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js">
 </script>
+<script type="text/javascript" src="bower_components/jquery-validation/dist/jquery.validate.min.js">
+</script>
+<script type="text/javascript" src="bower_components/jquery-validation-bootstrap-tooltip/jquery-validate.bootstrap-tooltip.min.js">
+</script>
 	<script type="text/javascript">
 	$(function(){
 		$("#vcodeImg").click(function(evt){
+			//通过随机数更改新的验证码图片的值让每次点击验证码图片都能更新
 			this.src="vcode.png?t="+Math.random();
+			});
+		$("#loginFrm").validate({
+			rules:{
+				name:{required:true},
+				pwd:{required:true}
+				},
+			messages:{
+				name:{required:"用户名不能为空"},
+				pwd:{required:"密码不能为空"}
+				},
+			tooltip_options:{
+				name:{placement:'bottom'},
+				pwd:{placement:'bottom'}
+				}
 			});
 		});
 	</script>

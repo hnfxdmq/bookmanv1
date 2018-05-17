@@ -1,6 +1,9 @@
 package cn.edu.nyist.bookmanv1.web;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -26,17 +29,17 @@ public class BookAddServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		//½â¾öÉÏ´«
+		//è§£å†³ä¸Šä¼ 
 		Part part=request.getPart("photo");
 		String fileName=part.getHeader("Content-Disposition").split(";")[2].split("=")[1].replace("\"", "");
-		//½â¾öIEÏÂÎÄ¼şÈ«Â·¾¶ÃûÎÊÌâ
+		//è§£å†³IEä¸‹å…¨è·¯å¾„æ–‡ä»¶å
 		fileName=fileName.lastIndexOf("\\")==-1?fileName:fileName.substring(fileName.lastIndexOf("\\")+1);
-		//½â¾öÀàËÆ123.123.txtÕâÖÖÎÄ¼şÃû
+		//å­˜åœ¨ç±»ä¼¼123.123.txtè¿™ç§æ–‡ä»¶å
 		String ext=fileName.substring(fileName.lastIndexOf('.')+1);
-		//Ê¹ÓÃUUIDËæ»ú²úÉúÒ»¸öĞÂÎÄ¼şÃû
+		//Ê¹ä½¿ç”¨UUIDäº§ç”Ÿéšæœºæ–‡ä»¶å
 		String newFileName=UUID.randomUUID().toString()+"."+ext;
 		part.write(request.getServletContext().getRealPath("upload/"+newFileName));
-		//»ñÈ¡²ÎÊı
+		//è·å–ç”¨æˆ·è¾“å…¥å‚æ•°
 		String name = request.getParameter("name");
 		String descri = request.getParameter("descri");
 		String author = request.getParameter("author");
@@ -44,15 +47,23 @@ public class BookAddServlet extends HttpServlet {
 		Double price = Double.parseDouble(stringPrice);
 		String stringTid = request.getParameter("tid");
 		int tid = Integer.parseInt(stringTid);
-		//µ÷ÓÃÒµÎñ²ãÉÏ´«
+		String strPubDate = request.getParameter("pubDate");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date pubDate = null;
+		try {
+			pubDate = sdf.parse(strPubDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		//è°ƒç”¨ä¸šåŠ¡å±‚ä¿å­˜
 		BookBiz bookBiz = new BookBizImpl();
-		int ret = bookBiz.saveBook(name,descri,author,price,tid,newFileName);
-		//¸øÓÃ»§Ò»¸ö·´À¡
+		int ret = bookBiz.saveBook(name,descri,author,price,tid,newFileName,pubDate);
+		//ç»™ç”¨æˆ·åé¦ˆ
 		response.setContentType("text/html;charest=utf-8");
 		if (ret>0) {
-			response.getWriter().write("Ìí¼Ó³É¹¦");
+			response.getWriter().write("æ·»åŠ æˆåŠŸ");
 		} else {
-			request.setAttribute("msg", "Ìí¼ÓÊ§°Ü");
+			request.setAttribute("msg", "æ·»åŠ å¤±è´¥");
 			request.getRequestDispatcher("bookAdd.jsp").forward(request, response);
 
 		}

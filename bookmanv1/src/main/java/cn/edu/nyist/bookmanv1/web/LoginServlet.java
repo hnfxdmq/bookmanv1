@@ -22,27 +22,27 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//1¡¢»ñÈ¡ÓÃ»§ÊäÈë
+		//1è·å–å‚æ•°
 				String name=request.getParameter("name");
 				String pwd=request.getParameter("pwd");
 				String vcode=request.getParameter("vcode");
-				//ÔÚ²éÑ¯Êı¾İ¿âÖ®Ç°Ö´ĞĞ
+				//
 				HttpSession session=request.getSession();
 				String serverString=(String) session.getAttribute("validateCode");
 				if(!serverString.equalsIgnoreCase(vcode)) {
-					request.setAttribute("msg", "ÑéÖ¤Âë´íÎó");
+					request.setAttribute("msg", "éªŒè¯ç é”™è¯¯");
 					request.setAttribute("name", name);
 					request.getRequestDispatcher("login.jsp").forward(request, response);
 					return ;
 				}
-				//2¡¢Êı¾İ²éÑ¯
+				//2è°ƒç”¨ä¸šåŠ¡å±‚éªŒè¯
 				AdminBiz adminBiz=new AdminBizImpl();
 				boolean ret=adminBiz.findAdminByNameAndPwd(name,pwd);
-				//3¡¢¸øÓÃ»§Ò»¸öÏàÓ¦
+				//3ç»™ç”¨æˆ·ååº”
 				if (ret) {
 					response.sendRedirect("main.jsp");
 				} else {
-					request.setAttribute("msg", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+					request.setAttribute("msg", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 					request.setAttribute("name", name);
 					request.getRequestDispatcher("login.jsp").forward(request, response);
 

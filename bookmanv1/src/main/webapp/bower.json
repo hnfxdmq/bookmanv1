@@ -15,6 +15,7 @@
   "dependencies": {
     "bootstrap": "~3.3.7",
     "jquery-validation":"1.14.0",
-    "jquery-validation-bootstrap-tooltip":"0.10.2"
-  }
+    "jquery-validation-bootstrap-tooltip":"0.10.2",
+    "bootstrap-datepicker":"1.6"
+    }
 }

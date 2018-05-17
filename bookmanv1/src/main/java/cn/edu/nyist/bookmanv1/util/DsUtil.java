@@ -1,6 +1,7 @@
 package cn.edu.nyist.bookmanv1.util;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,6 +35,23 @@ public class DsUtil {
 				e.printStackTrace();
 			}
 		}
+	}
+	public static void free(PreparedStatement stmt, Connection conn) {
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 }

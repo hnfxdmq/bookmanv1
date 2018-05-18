@@ -1,9 +1,6 @@
 package cn.edu.nyist.bookmanv1.web;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -16,6 +13,8 @@ import javax.servlet.http.Part;
 
 import cn.edu.nyist.bookmanv1.biz.BookBiz;
 import cn.edu.nyist.bookmanv1.biz.impl.BookBizImpl;
+import cn.edu.nyist.bookmanv1.util.MyBeanUtils;
+import cn.edu.nyist.bookmanv1.vo.BookVo;
 
 @WebServlet("/bookAdd")
 @MultipartConfig
@@ -40,7 +39,7 @@ public class BookAddServlet extends HttpServlet {
 		String newFileName=UUID.randomUUID().toString()+"."+ext;
 		part.write(request.getServletContext().getRealPath("upload/"+newFileName));
 		//获取用户输入参数
-		String name = request.getParameter("name");
+		/*String name = request.getParameter("name");
 		String descri = request.getParameter("descri");
 		String author = request.getParameter("author");
 		String stringPrice = request.getParameter("price");
@@ -54,10 +53,22 @@ public class BookAddServlet extends HttpServlet {
 			pubDate = sdf.parse(strPubDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
-		}
+		}*/
+		BookVo bookVo = new BookVo();
+		/*无法转换日期格式
+		 * try {
+			BeanUtils.populate(bookVo, request.getParameterMap());
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}*/
+		MyBeanUtils.populate(bookVo, request.getParameterMap(), "yyyy-MM-dd");
+		bookVo.setPhoto(newFileName);
 		//调用业务层保存
 		BookBiz bookBiz = new BookBizImpl();
-		int ret = bookBiz.saveBook(name,descri,author,price,tid,newFileName,pubDate);
+		//int ret = bookBiz.saveBook(name,descri,author,price,tid,newFileName,pubDate);
+		int ret = bookBiz.saveBook(bookVo);
 		//给用户反馈
 		response.setContentType("text/html;charest=utf-8");
 		if (ret>0) {

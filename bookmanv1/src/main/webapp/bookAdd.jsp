@@ -20,7 +20,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<form class="form-horizontal" role="form" method="post"
-					action="bookAdd" id="loginFrm" enctype="multipart/form-data">
+					action="bookAdd" id="bookAddFrm" enctype="multipart/form-data">
 					<%
 						if (request.getAttribute("msg") != null) {
 					%>
@@ -144,10 +144,44 @@
 				//通过随机数更改新的验证码图片的值让每次点击验证码图片都能更新
 				this.src = "vcode.png?t=" + Math.random();
 			});
+			//日期控件
 			$('#inputPubDate').datepicker({
-				format : 'yyyy-mm-dd',
-				language : 'zh-CN',
-				autoclose : true
+				format : 'yyyy-mm-dd',//日期格式
+				language : 'zh-CN',//提示中文界面
+				autoclose : true//自动关闭
+			});
+			//添加验证
+			$( "#bookAddFrm" ).validate( {
+				rules: {
+					name: "required",
+					photo: "required",
+					price: {
+						required: true
+					}
+				},
+				messages: {
+					name: "书名必填",
+					photo: "图片必填",
+					username: {
+						required: "价格必填",
+						number: "必须输入数字"
+					}
+				},
+				errorElement: "em",
+				errorPlacement: function ( error, element ) {
+					error.addClass( "alert-warning" );
+					if ( element.prop( "type" ) === "checkbox" ) {
+						error.insertAfter( element.parent( "label" ) );
+					} else {
+						error.insertAfter( element );
+					}
+				},
+				highlight: function ( element, errorClass, validClass ) {
+					$( element ).parents( ".col-sm-6" ).addClass( "has-error" ).removeClass( "has-success" );
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$( element ).parents( ".col-sm-6" ).addClass( "has-success" ).removeClass( "has-error" );
+				}
 			});
 		});
 	</script>

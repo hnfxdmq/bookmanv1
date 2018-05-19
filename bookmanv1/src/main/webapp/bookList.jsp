@@ -1,3 +1,4 @@
+<%@page import="cn.edu.nyist.bookmanv1.vo.TypeVo"%>
 <%@page import="cn.edu.nyist.bookmanv1.vo.BookVo"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -52,6 +53,36 @@
 				<table class="table table-hover table-condensed table-bordered">
 					<thead>
 						<tr>
+							<td colspan="8"><form class="form-inline" action="bookList" id="searchFrm">
+									<div class="form-group">
+										<label for="inputName">书名</label> <input type="text"
+											class="form-control" id="inputName"
+											name="name" value='<%=request.getAttribute("name")==null?"":request.getAttribute("name")%>'>
+									</div>
+									<div class="form-group">
+										<label for="selTid">类别</label> 
+										<select name="tid" id="selTid" class="form-control">
+										<option value="-1">--请选择--</option>
+										<% 
+										List<TypeVo> lis = (List<TypeVo>)request.getAttribute("types");
+												int tid = (Integer)request.getAttribute("tid");
+												for(TypeVo typeVo:lis){
+													if(tid==typeVo.getId()){
+													%>
+													<option value="<%=typeVo.getId()%>" selected="selected"><%=typeVo.getName()%></option>
+													<% 
+												}else{
+													%>
+													<option value="<%=typeVo.getId()%>"><%=typeVo.getName()%></option>
+													<% 
+												}}
+										%>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-default">搜索</button>
+								</form></td>
+						</tr>
+						<tr>
 							<th>id</th>
 							<th>name</th>
 							<th>descri</th>
@@ -72,7 +103,7 @@
 							<td><%=bookVo.getName()%></td>
 							<td><%=bookVo.getDescri()%></td>
 							<td><%=bookVo.getTid()%></td>
-							<td><img alt="" src="upload/<%=bookVo.getPhoto()%>"></td>
+							<td><img alt="" src="upload/<%=bookVo.getPhoto()%>" style="max-height: 100px"></td>
 							<td><%=bookVo.getPrice()%></td>
 							<td><%=bookVo.getAuthor()%></td>
 							<td><%=bookVo.getPubDate()%></td>
@@ -169,6 +200,12 @@
 	<script type="text/javascript">
 	$(function(){
 		$("a[href='bookList?pageNo=<%=pageNo%>']").parent("li").addClass("active");
+		//修改分页链接，追加name和tid
+		//href^筛选以bookList?pageNo=为开头的标签，属性用中括号选中
+		$(".pagination a[href^='bookList?pageNo=']").click(function(){
+			//用序列化表单，解决分页时传参数问题
+			this.href+="&"+$("#searchFrm").serialize();
+			})
 		})
 	</script>
 </body>

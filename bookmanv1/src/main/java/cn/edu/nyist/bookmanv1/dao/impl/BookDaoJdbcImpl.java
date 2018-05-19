@@ -42,14 +42,30 @@ public class BookDaoJdbcImpl implements BookDao {
 	}
 
 	@Override
-	public List<BookVo> findAll(int pageNo) {
+	public List<BookVo> findAll(int pageNo,String name,int tid) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			conn = DsUtil.getConn();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select * from t_book limit "+((pageNo-1)*PageConstant.PAGE_SIZE)+","+PageConstant.PAGE_SIZE);
+			//把2^n-1次条件减少为n次
+			String sql = "select * from t_book where 1=1";
+			/*if((tid!=-1)&&((name==null)||(name.equals("")))) {
+				sql+="and tid="+tid;
+			}else if(!((name==null)||(name.equals("")))&&(tid==-1)) {
+				sql+="and name like '%"+name+"%'";
+			}else {
+				sql+="and tid="+tid+"and name like '%"+name+"%'";
+			}*/
+			if(tid!=-1) {
+				sql+=" and tid="+tid;
+			}
+			if(name!=null&&!name.equals("")) {
+				sql+=" and name like '%"+name+"%'";
+			}
+			sql+=" limit "+((pageNo-1)*PageConstant.PAGE_SIZE)+","+PageConstant.PAGE_SIZE;
+			rs = stmt.executeQuery(sql);
 			List<BookVo> ls = new ArrayList<>();
 			while(rs.next()) {
 				BookVo bookVo = new BookVo();
@@ -73,13 +89,19 @@ public class BookDaoJdbcImpl implements BookDao {
 	}
 
 	@Override
-	public int getTotal() {
+	public int getTotal(String name,int tid) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
 			conn=DsUtil.getConn();
-			String sql="select count(*) from t_book";
+			String sql="select count(*) from t_book where 1=1";
+			if(tid!=-1) {
+				sql+=" and tid="+tid;
+			}
+			if(name!=null&&!name.equals("")) {
+				sql+=" and name like '%"+name+"%'";
+			}
 			stmt=conn.prepareStatement(sql);
 			rs=stmt.executeQuery();
 			if(rs.next()) {

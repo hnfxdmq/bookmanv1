@@ -53,7 +53,7 @@
 				<table class="table table-hover table-condensed table-bordered">
 					<thead>
 						<tr>
-							<td colspan="8"><form class="form-inline" action="bookList" id="searchFrm">
+							<td colspan="9"><form class="form-inline" action="bookList" id="searchFrm">
 									<div class="form-group">
 										<label for="inputName">书名</label> <input type="text"
 											class="form-control" id="inputName"
@@ -83,14 +83,15 @@
 								</form></td>
 						</tr>
 						<tr>
-							<th>id</th>
-							<th>name</th>
-							<th>descri</th>
-							<th>tid</th>
-							<th>photo</th>
-							<th>price</th>
-							<th>author</th>
-							<th>pubDate</th>
+							<th>编号</th>
+							<th>书名</th>
+							<th>描述</th>
+							<th>类别</th>
+							<th>图片</th>
+							<th>价格</th>
+							<th>作者</th>
+							<th>出版时间</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -107,12 +108,16 @@
 							<td><%=bookVo.getPrice()%></td>
 							<td><%=bookVo.getAuthor()%></td>
 							<td><%=bookVo.getPubDate()%></td>
+							<td>
+							<a href="bookDel?id=<%=bookVo.getId()%>" class="glyphicon glyphicon-remove" title="删除" onclick="confirmDel(event)"></a>&nbsp;
+							<a href="toBookEdit?id=<%=bookVo.getId()%>" class="glyphicon glyphicon-pencil" title="修改"></a>
+							</td>
 						</tr>
 						<%
 							}
 						%>
 						<tr>
-							<td colspan="8" style="padding-top: 0px;padding-bottom: 0px" class="text-center">
+							<td colspan="9" style="padding-top: 0px;padding-bottom: 0px" class="text-center">
 								<ul class="pagination" style="margin: 0px">
 								<%
 								int pageNo=(Integer)request.getAttribute("pageNo");
@@ -206,7 +211,13 @@
 			//用序列化表单，解决分页时传参数问题
 			this.href+="&"+$("#searchFrm").serialize();
 			})
-		})
+		});
+	function confirmDel(event){
+		if(!confirm("确认删除")){
+			//取消默认行为
+			event.preventDefault();
+			}
+		}
 	</script>
 </body>
 </html>

@@ -115,4 +115,24 @@ public class BookDaoJdbcImpl implements BookDao {
 		return 0;
 	}
 
+	@Override
+	public boolean del(int id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DsUtil.getConn();
+			String str = "delete from t_book where id="+id;
+			stmt = conn.prepareStatement(str);
+			int result = stmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DsUtil.free(stmt, conn);
+		}
+		return false;
+	}
+
 }

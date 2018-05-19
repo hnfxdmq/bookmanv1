@@ -54,8 +54,9 @@ public class BookAddServlet extends HttpServlet {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}*/
+		//一个个保存参数太复杂，因此使用一个类对其进行包装
 		BookVo bookVo = new BookVo();
-		/*无法转换日期格式
+		/*BeanUtils无法转换日期格式
 		 * try {
 			BeanUtils.populate(bookVo, request.getParameterMap());
 		} catch (IllegalAccessException e) {

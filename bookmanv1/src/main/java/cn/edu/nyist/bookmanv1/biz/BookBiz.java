@@ -16,4 +16,6 @@ public interface BookBiz {
 
 	List<TypeVo> findAllTypes();
 
+	boolean delById(int id);
+
 }

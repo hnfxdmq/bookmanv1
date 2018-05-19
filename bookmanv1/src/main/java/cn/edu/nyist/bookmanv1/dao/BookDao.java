@@ -13,4 +13,6 @@ public interface BookDao {
 
 	int getTotal(String name, int tid);
 
+	boolean del(int id);
+
 }

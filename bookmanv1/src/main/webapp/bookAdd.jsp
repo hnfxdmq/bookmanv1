@@ -2,6 +2,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<!-- 
+<% 
+//权限拦截
+		if(session.getAttribute("loginSuccess")==null||!session.getAttribute("loginSuccess").equals("1")) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+%>
+-->
 <!DOCTYPE html>
 <html>
 <head>

@@ -24,6 +24,11 @@ public class BookListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 权限拦截
+		/*if (request.getSession().getAttribute("loginSuccess") == null|| !request.getSession().getAttribute("loginSuccess").equals("1")) {
+			response.sendRedirect("login.jsp");
+			return;
+		}*/
 		//获取参数
 		String strPageNo = request.getParameter("pageNo");
 		int pageNo;

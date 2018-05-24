@@ -40,8 +40,11 @@ public class LoginServlet extends HttpServlet {
 				boolean ret=adminBiz.findAdminByNameAndPwd(name,pwd);
 				//3给用户反应
 				if (ret) {
+					//记录下登录成功
+					request.getSession().setAttribute("loginSuccess", "1");
 					response.sendRedirect("main.jsp");
 				} else {
+					//登录失败
 					request.setAttribute("msg", "用户名或密码错误");
 					request.setAttribute("name", name);
 					request.getRequestDispatcher("login.jsp").forward(request, response);

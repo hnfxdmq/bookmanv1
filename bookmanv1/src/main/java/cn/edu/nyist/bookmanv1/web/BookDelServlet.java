@@ -19,6 +19,11 @@ public class BookDelServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 权限拦截
+		/*if (request.getSession().getAttribute("loginSuccess") == null|| !request.getSession().getAttribute("loginSuccess").equals("1")) {
+			response.sendRedirect("login.jsp");
+			return;
+		}*/
 		//1、获取参数
 		String strId = request.getParameter("id");
 		int id = Integer.parseInt(strId);

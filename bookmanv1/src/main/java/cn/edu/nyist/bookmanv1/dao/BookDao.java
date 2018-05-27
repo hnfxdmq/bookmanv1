@@ -15,4 +15,8 @@ public interface BookDao {
 
 	boolean del(int id);
 
+	BookVo get(int id);
+
+	int edit(BookVo bookVo);
+
 }

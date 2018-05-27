@@ -1,14 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-<!--  
-<% 
+    pageEncoding="utf-8"%>  
+<%--
 //权限拦截
 		if(session.getAttribute("loginSuccess")==null||!session.getAttribute("loginSuccess").equals("1")) {
 			response.sendRedirect("login.jsp");
 			return;
 		}
-%>
--->
+--%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +34,7 @@
 							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">书籍管理<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="#">查看</a>
+									<a href="bookList">查看</a>
 								</li>
 								<li>
 									<a href="bookAdd.jsp">添加</a>
@@ -49,7 +47,7 @@
 							<a href="#">修改密码</a>
 						</li>
 						<li>
-							<a href="#">退出</a>
+							<a href="exit.jsp">退出</a>
 						</li>
 					</ul>
 				</div>

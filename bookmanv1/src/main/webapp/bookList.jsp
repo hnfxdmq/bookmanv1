@@ -3,15 +3,13 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<!--  
-<% 
+<%--jsp注释
 //权限拦截
 		if(session.getAttribute("loginSuccess")==null||!session.getAttribute("loginSuccess").equals("1")) {
 			response.sendRedirect("login.jsp");
 			return;
 		}
-%>
--->
+--%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,13 +42,13 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
 								data-toggle="dropdown">书籍管理<strong class="caret"></strong></a>
 								<ul class="dropdown-menu">
-									<li><a href="#">查看</a></li>
+									<li><a href="bookList">查看</a></li>
 									<li><a href="bookAdd.jsp">添加</a></li>
 								</ul></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="#">修改密码</a></li>
-							<li><a href="#">退出</a></li>
+							<li><a href="exit.jsp">退出</a></li>
 						</ul>
 					</div>
 

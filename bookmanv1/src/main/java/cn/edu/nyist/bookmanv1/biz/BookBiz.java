@@ -18,4 +18,8 @@ public interface BookBiz {
 
 	boolean delById(int id);
 
+	BookVo findBookById(int id);
+
+	int editBook(BookVo bookVo);
+
 }

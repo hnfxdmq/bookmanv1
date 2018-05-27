@@ -1,3 +1,4 @@
+<%@page import="cn.edu.nyist.bookmanv1.vo.BookVo"%>
 <%@page import="cn.edu.nyist.bookmanv1.vo.TypeVo"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -64,14 +65,16 @@
 		<div class="row">
 			<div class="col-md-12">
 				<form class="form-horizontal" role="form" method="post"
-					action="bookAdd" id="bookAddFrm" enctype="multipart/form-data">
+					action="doBookEdit" id="bookEditFrm" enctype="multipart/form-data">
 					<%
 						if (request.getAttribute("msg") != null) {
 					%>
 					<div class="alert alert-warning" role="alert"><%=request.getAttribute("msg")%></div>
 					<%
 						}
+					BookVo bookVo=(BookVo)request.getAttribute("bookVo");
 					%>
+					<input type="hidden" name="id" value="<%=bookVo.getId()%>">
 					<div class="form-group">
 
 						<label for="inputName" class="col-sm-2 control-label"> 书名
@@ -79,7 +82,7 @@
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="inputName"
 								name="name"
-								value="<%=request.getAttribute("name") == null ? "" : request.getAttribute("name")%>" />
+								value="<%=bookVo==null||bookVo.getName()==null ? "" : bookVo.getName()%>" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -87,14 +90,23 @@
 						<label for="textAreaDescri" class="col-sm-2 control-label">
 							描述 </label>
 						<div class="col-sm-10">
-							<textarea class="form-control" name="descri" id="textAreaDescri"></textarea>
+							<textarea class="form-control" name="descri" id="textAreaDescri">
+							<%=bookVo==null||bookVo.getDescri()==null ? "" : bookVo.getDescri()%>
+							</textarea>
 						</div>
 					</div>
 					<div class="form-group">
 
 						<label for="inputPhoto" class="col-sm-2 control-label"> 图片
 						</label>
-						<div class="col-sm-10">
+						<% 
+						if(bookVo!=null&&bookVo.getPhoto()!=null){
+						%>
+						<div class="col-sm-6">
+						<img alt="" src="upload/<%=bookVo.getPhoto()%>">
+						</div>
+						<% }%>
+						<div class="col-sm-4">
 							<input type="file" class="form-control" id="inputPhoto"
 								name="photo" />
 						</div>
@@ -104,8 +116,9 @@
 						<label for="inputPrice" class="col-sm-2 control-label"> 价格
 						</label>
 						<div class="col-sm-10">
-							<input type="number" class="form-control" id="inputPrice"
-								name="price" placeholder="请输入数字" />
+							<input type="text" class="form-control" id="inputPrice"
+								name="price" placeholder="请输入数字" 
+								value="<%=bookVo==null? "" : bookVo.getPrice()%>"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -114,7 +127,7 @@
 							出版时间 </label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="inputPubDate"
-								name="pubDate" />
+								name="pubDate" value="<%=bookVo==null||bookVo.getPubDate()==null ? "" : bookVo.getPubDate()%>"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -123,7 +136,7 @@
 							作者 </label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="inputAuthor"
-								name="author" />
+								name="author" value="<%=bookVo==null||bookVo.getAuthor()==null ? "" : bookVo.getAuthor()%>"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -151,7 +164,7 @@
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 
-							<button type="submit" class="btn btn-default">添加</button>
+							<button type="submit" class="btn btn-default">修改</button>
 						</div>
 					</div>
 				</form>
@@ -195,17 +208,16 @@
 				autoclose : true//自动关闭
 			});
 			//添加验证
-			$( "#bookAddFrm" ).validate( {
+			$( "#bookEditFrm" ).validate( {
 				rules: {
 					name: "required",
-					photo: "required",
 					price: {
-						required: true
+						required: true,
+						number: true
 					}
 				},
 				messages: {
 					name: "书名必填",
-					photo: "图片必填",
 					username: {
 						required: "价格必填",
 						number: "必须输入数字"
@@ -231,9 +243,14 @@
 	</script>
 	<script type="text/javascript">
 		function fillSel(){
+			var tid = <%=bookVo.getTid()%>;
 			var sel = document.getElementById("selectTid");
 			for(var i=0;i<types.length;i++){
-				sel.appendChild(new Option(types[i].name,types[i].id));
+				var op=new Option(types[i].name,types[i].id);
+				sel.appendChild(op);
+				if(tid==types[i].id){
+					op.selected=true;
+					}
 				}
 			}
 	</script>

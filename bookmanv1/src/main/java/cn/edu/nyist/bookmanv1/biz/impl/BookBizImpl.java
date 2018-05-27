@@ -42,4 +42,16 @@ public class BookBizImpl implements BookBiz {
 		return bookDao.del(id);
 	}
 
+	@Override
+	public BookVo findBookById(int id) {
+		BookDao bookDao = new BookDaoJdbcImpl();
+		return bookDao.get(id);
+	}
+
+	@Override
+	public int editBook(BookVo bookVo) {
+		BookDao bookDao = new BookDaoJdbcImpl();
+		return bookDao.edit(bookVo);
+	}
+
 }

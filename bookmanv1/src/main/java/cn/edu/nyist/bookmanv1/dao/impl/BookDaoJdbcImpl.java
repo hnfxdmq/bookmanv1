@@ -135,4 +135,76 @@ public class BookDaoJdbcImpl implements BookDao {
 		return false;
 	}
 
+	@Override
+	public BookVo get(int id) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DsUtil.getConn();
+			stmt = conn.createStatement();
+			String sql = "select * from t_book where id="+id;
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				BookVo bookVo = new BookVo();
+				bookVo.setAuthor(rs.getString("author"));
+				bookVo.setDescri(rs.getString("descri"));
+				bookVo.setId(rs.getInt("id"));
+				bookVo.setName(rs.getString("name"));
+				bookVo.setPhoto(rs.getString("photo"));
+				bookVo.setPrice(rs.getDouble("price"));
+				bookVo.setPubDate(rs.getDate("pubDate"));
+				bookVo.setTid(rs.getInt("tid"));
+				return bookVo;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DsUtil.free(stmt, conn, rs);
+		}
+		return null;
+	}
+
+	@Override
+	public int edit(BookVo bookVo) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DsUtil.getConn();
+			if(bookVo.getPhoto()==null||bookVo.getPhoto().equals("")) {
+				String str = "update t_book set tid=?,name=?,descri=?,price=?,author=?,pubDate=? where id=?";
+				stmt = conn.prepareStatement(str);
+				stmt.setInt(1, bookVo.getTid());
+				stmt.setString(2, bookVo.getName());
+				stmt.setString(3, bookVo.getDescri());
+				stmt.setDouble(4, bookVo.getPrice());
+				stmt.setString(5, bookVo.getAuthor());
+				//java.util.Date--->java.sql.Date
+				stmt.setDate(6, new java.sql.Date(bookVo.getPubDate().getTime()));
+				stmt.setInt(7, bookVo.getId());
+				int result = stmt.executeUpdate();
+				return result;
+			}else {
+				String str = "update t_book set tid=?,name=?,descri=?,photo=?,price=?,author=?,pubDate=? where id=?";
+				stmt = conn.prepareStatement(str);
+				stmt.setInt(1, bookVo.getTid());
+				stmt.setString(2, bookVo.getName());
+				stmt.setString(3, bookVo.getDescri());
+				stmt.setString(4, bookVo.getPhoto());
+				stmt.setDouble(5, bookVo.getPrice());
+				stmt.setString(6, bookVo.getAuthor());
+				//java.util.Date--->java.sql.Date
+				stmt.setDate(7, new java.sql.Date(bookVo.getPubDate().getTime()));
+				stmt.setInt(8, bookVo.getId());
+				int result = stmt.executeUpdate();
+				return result;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DsUtil.free(stmt, conn);
+		}
+		return 0;
+	}
+
 }
